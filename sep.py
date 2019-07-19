@@ -14,6 +14,9 @@ if len(sys.argv) == 1:
     print("Optional Arguments")
     print("    assignment.ipynb = name to write assignment")
     print("    solution.ipynb   = name to write solution")
+    print("Note: If optional names not given, sep will first try to replace")
+    print("      'master' with the strings 'assignment' and 'solution', and")
+    print("      will post-fix if 'master' is not found")
 
 else:
     # Handle command line arguments
@@ -22,12 +25,28 @@ else:
     if len(sys.argv) > 2:
         filename_assignment = sys.argv[2]
     else:
-        filename_assignment = "assignment.ipynb"
+        ## Replace 'master' if possible
+        if filename_orig.find("master") > -1:
+            filename_assignment = filename_orig.replace("master", "assignment")
+        ## Post-fix if 'master' not found
+        else:
+            filename_assignment = filename_orig.replace(
+                ".ipynb",
+                "_assignment.ipynb"
+            )
 
     if len(sys.argv) > 3:
         filename_solution = sys.argv[3]
     else:
-        filename_solution = "solution.ipynb"
+        ## Replace 'master' if possible
+        if filename_orig.find("master") > -1:
+            filename_solution = filename_orig.replace("master", "solution")
+        ## Post-fix if 'master' not found
+        else:
+            filename_solution = filename_orig.replace(
+                ".ipynb",
+                "_solution.ipynb"
+            )
 
 ## Load the notebook
 nb_orig       = nbformat.read(filename_orig, as_version = 3)
